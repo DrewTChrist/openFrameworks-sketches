@@ -1,17 +1,22 @@
 #include <vector>
+#include <time.h>
 #include "ofApp.h"
 
 std::vector<std::vector<ofVec2f>> downTriangles;
 std::vector<std::vector<ofVec2f>> upTriangles;
 float downRot = 0.0;
 float upRot = 0.0;
-float tLength = 50.0;
+float tLength = 75.0;
+int rotateFrameCount = 0;
+bool rotateDownTriangles = true;
+bool rotateUpTriangles = false;
+
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-	ofBackground(0xe2ae6c);	
-    for(int i = 0; i < ofGetHeight(); i += tLength) {
-        for(int j = 0; j < ofGetWidth(); j += (tLength * (sqrt(3) / 2))) {
+	ofBackgroundHex(0xe2ae6c);	
+    for(int i = 0; i < ofGetHeight() + 50; i += tLength) {
+        for(int j = 0; j < ofGetWidth() + 50; j += (tLength * (sqrt(3) / 2))) {
             downTriangles.push_back(downwardTriangleCoordinates(i, j));
         }
     }
@@ -25,41 +30,46 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    //downRot += 1.0;
-    upRot += 1.0;
+    if (rotateDownTriangles) {
+        if(downRot < 360.0) {
+            downRot += 1.0;
+        } else {
+            downRot = 0.0;
+            rotateUpTriangles = true;
+            rotateDownTriangles = false;
+        }
+    } else if (rotateUpTriangles) {
+        if(upRot < 360.0) {
+            upRot += 1.0;
+        } else {
+            upRot = 0.0;
+            rotateUpTriangles = false;
+            rotateDownTriangles = true;
+        }
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
     ofPushStyle();
     ofSetHexColor(0xa37c82);
-    for(int i = 0; i < 1; i++) {
-        std::vector<ofVec2f> v = downTriangles[i];
+    for(std::vector<ofVec2f> v : downTriangles) {
         ofPushMatrix();
-        //ofTranslate(v[2].x, v[2].y - ((tLength * (sqrt(3) / 2)) / 2));
-        //ofTranslate(ofGetMouseX() - (tLength / 2), ofGetMouseY() - ((tLength * (sqrt(3) / 2)) / 2));
-        ofTranslate(v[0].x, v[0].y);
+        ofTranslate(v[0].x + (tLength / 2), v[0].y + ((tLength * (sqrt(3) / 2)) / 2));
         ofRotateZDeg(downRot);
-        //ofDrawTriangle(0, 0, tLength, 0, tLength / 2, tLength * (sqrt(3) / 2));
-        ofDrawTriangle(-tLength/2, 0, tLength/2, 0, tLength / 2, tLength * (sqrt(3) / 2));
+        ofDrawTriangle(-tLength/2, -((tLength * (sqrt(3) / 2)) / 2), tLength/2, -((tLength * (sqrt(3) / 2)) / 2), 0, (tLength * ((sqrt(3) / 2)) / 2));
         ofPopMatrix();
     }
-    /*for(std::vector<ofVec2f> v : downTriangles) {
-        ofPushMatrix();
-        ofRotateZDeg(downRot);
-        ofTranslate(v[2].x, v[2].y + ((tLength * (sqrt(3) / 2)) / 2));
-        ofDrawTriangle(v[0].x, v[0].y, v[1].x, v[1].y, v[2].x, v[2].y);
-        ofPopMatrix();
-    }*/
     ofPopStyle();
 
     ofPushStyle();
     ofSetHexColor(0x6e304b);
     for(std::vector<ofVec2f> v : upTriangles) {
-        //ofPushMatrix();
-        //ofRotateZDeg(upRot);
-        //ofDrawTriangle(v[0].x, v[0].y, v[1].x, v[1].y, v[2].x, v[2].y);
-        //ofPopMatrix();
+        ofPushMatrix();
+        ofTranslate(v[0].x + (tLength / 2), v[0].y + ((tLength * (sqrt(3) / 2)) / 2));
+        ofRotateZDeg(upRot);
+        ofDrawTriangle(-tLength/2, ((tLength * (sqrt(3) / 2)) / 2), tLength/2, ((tLength * (sqrt(3) / 2)) / 2), 0, -(tLength * ((sqrt(3) / 2)) / 2));
+        ofPopMatrix();
     }
     ofPopStyle();
 }
