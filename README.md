@@ -13,3 +13,6 @@ Some openFrameworks sketches.
 ![Sketch 003](https://github.com/drewtchrist/openframeworks-sketches/tree/master/stills/sketch003.png)
 4. [004](https://github.com/drewtchrist/openframeworks-sketches/tree/master/sketch004/src)
 ![Sketch 004](https://github.com/drewtchrist/openframeworks-sketches/tree/master/stills/sketch004.png)
+5. [005](https://github.com/drewtchrist/openframeworks-sketches/tree/master/sketch005/src)
+![Sketch 005](https://github.com/drewtchrist/openframeworks-sketches/tree/master/stills/sketch005.png)
+
